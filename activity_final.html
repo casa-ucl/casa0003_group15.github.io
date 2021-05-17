@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>London Avtivity Score</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <meta charset="utf-8">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css" rel="stylesheet" />
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .legend {
+            border-radius: 3px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0);
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            padding: 10px;
+            position: absolute;
+            left: 290px;
+            top: 190px;
+            z-index: 1;
+        }
+
+        .legend h4 {
+            margin: 0 0 10px;
+        }
+
+        .legend div span {
+            border-radius: 50%;
+            display: inline-block;
+            height: 10px;
+            margin-right: 5px;
+            width: 10px;
+        }
+
+        #legtext {
+            margin: 10px 0px 8px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+
+        #legtext2 {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 380px;
+            min-width: 380px;
+            top: 0;
+            left: 0;
+            padding: 10px;
+        }
+
+        .map-overlay .map-overlay-inner {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .map-overlay table {
+            border: none;
+            width: 100%;
+        }
+
+        .map-overlay h2 {
+            line-height: 50px;
+            display: block;
+            margin: 0 0 0 0px;
+        }
+
+        .map-overlay label {
+            font: 16px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            vertical-align: bottom;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .map-overlay p.credit {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .map-overlay .map-overlay-buttom h2 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .map-overlay h3 {
+            margin: 0;
+            padding: 0;
+            color: #333;
+            font: 16px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+
+
+        div#vaccintext {
+            margin: 60px 0 0 0;
+            width: 180px;
+        }
+
+        div#vaccintext h2 {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+
+        div#vaccintext h3 {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+
+        h3#ccc {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .map-overlay input {
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            margin: 5px;
+            padding: 0;
+        }
+
+        .map-overlay input#slider {
+            background-color: transparent;
+            display: inline-block;
+            width: 95%;
+            margin: 0 0 0 0;
+        }
+
+        #my_dataviz {
+            position: relative;
+            right: 20px;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        h2#aaa {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .map-text-right {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: relative;
+            width: 300px;
+            min-width: 380px;
+            top: 0;
+            left: 0px;
+            padding: 0px;
+            float: right;
+        }
+
+        .map-text-right .map-text-right-inner {
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.9);
+
+        }
+
+        .map-discription {
+            float: right;
+            color: #333;
+        }
+
+        h2#nnn {
+            margin: 20px 30px 12px 30px;
+            padding: 0;
+            font: 20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: rgb(255,179,71);
+            font-weight: bold;
+            text-align: right;
+        }
+
+        h3#mmm {
+            margin: 0px 30px 0px 30px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: justify;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id='map'></div>
+
+    <div class='map-text-right'>
+        <div class='map-text-right-inner'>
+            <div class='map-discription'>
+                <h2 id='nnn'>Mobility</h2>
+                <h3 id='mmm'>Since the start of covid cases surge in London, many Londoners have experienced a
+                    paradigm shift in their lives. The introduction of national lockdown in Mar as a response to the
+                    pandemic by the government has largely affected people’s movement inside the region.</h3>
+                <h3 id='mmm'><br>The mobility score has indicated such response to policies aimed at combating COVID-19.
+                    The reports chart movement trends over time by London boroughs, where the average of mobility of
+                    each borough every month were calculated by taking the arithmetic mean across different categories
+                    of places such as retail and recreation, groceries and pharmacies, parks, transit stations.</h3>
+                <h3 id='mmm'><br>The interactive map shows the latest prevalence of covid-19 mobility scores by London
+                    boroughs from mar-dec 2020. Mobility scores in the worst affected boroughs are nearly doubled (in
+                    terms of the negative value) compared to those in the least affected boroughs.</h3>
+                <h3 id='mmm'><br>As we see gradual ease in the cases from the above maps after the first lockdown.
+                    Londen has in general begin to have more movement. The declines in new case rates were levelling off
+                    in most metropolitan boroughs and a handful was showing signs of rising again before introducing the
+                    second lockdown.</h3>
+            </div>
+        </div>
+    </div>
+
+    <div id="legendtext" class="legend">
+        <h3 id="ccc">Scale</h3>
+        <div><span style="background-color: rgba(255,152,90, 0.85)"></span>40</div>
+        <div><span style="background-color: rgba(255,179,71, 0.85)"></span>10</div>
+        <div><span style="background-color: rgba(242,200,148, 0.85)"></span>-20</div>
+        <div><span style="background-color: rgba(159,192,222, 0.85)"></span>-50</div>
+        <div><span style="background-color: rgba(119,158,204, 0.85)"></span>-80</div>
+    </div>
+
+    <div class='map-overlay top'>
+        <div class='map-overlay-inner'>
+            <div class='map-overlay' id='legend'></div>
+
+            <h2>London Mobility in 2020</h2>
+
+            <table>
+                <tr>
+                    <td>
+                        <div id='monthprint'>
+                            <label id='month'>Mar</label>
+                        </div>
+                        <input id='slider' type='range' min='0' max='8' step='1' value='0' list='tickmarks' />
+                        <datalist id="tickmarks">
+                            <option value="0" label="Mar">
+                            <option value="1">
+                            <option value="2">
+                            <option value="3">
+                            <option value="4" label="Aug">
+                            <option value="5">
+                            <option value="6">
+                            <option value="7">
+                            <option value="8" label="Dec">
+                        </datalist>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <div id="brnamea">
+                <h2 id='aaa'>London</h2>
+            </div>
+
+            <div class=brstructure>
+                <div class='map-overlay-buttom' id="brname">
+                    <div id="my_dataviz"></div>
+                    <div id='casetext'></div>
+                </div>
+            </div>
+
+            <p class="credit">Mobility score: <a href="https://www.google.com/covid19/mobility/">Google</a>. London
+                borough data: <a href="https://data.london.gov.uk/dataset/london_boroughs">GLA</a>.</p>
+
+        </div>
+</body>
+
+
+<script>
+    var my_dataviz = document.getElementById("my_dataviz");
+    var legendtext = document.getElementById("legendtext");
+
+    var margin = { top: 10, right: 30, bottom: 50, left: 60 },
+        width = 300 - margin.left - margin.right,
+        height = 250 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    //Read the data
+    d3.csv("https://raw.githubusercontent.com/YYZ2021/group/main/mobility_London.csv",
+
+        // When reading the csv, I must format variables:
+        function (d) {
+            return { date: d3.timeParse("%Y-%m")(d.date), value: d.value }
+        },
+
+        // Now I can use this dataset:
+        function (data) {
+
+            // Add X axis --> it is a date format
+            var x = d3.scaleTime()
+                .domain(d3.extent(data, function (d) { return d.date; }))
+                .range([0, width]);
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("transform", "translate(-10,0)rotate(-45)")
+                .style("text-anchor", "end");
+
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([-80, 40])
+                .range([height, 0]);
+            svg.append("g")
+                .call(d3.axisLeft(y));
+            svg.append("path")
+                .datum(data)
+                .attr("fill", "none")
+                .attr("stroke", "rgba(119,158,204, 0.85)")
+                .attr("stroke-width", 1.5)
+                .attr("d", d3.line()
+                    .x(function (d) { return x(d.date) })
+                    .y(function (d) { return y(d.value) })
+                )
+
+            // Add the points
+            svg.append("g")
+                .selectAll("dot")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d) { return x(d.date) })
+                .attr("cy", function (d) { return y(d.value) })
+                .attr("r", 5)
+                .attr("fill", "rgba(255,152,90, 0.85)")
+
+        })
+
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic3VwZXJub3Zham9uIiwiYSI6ImNra2ZkNmFpbjAzNzEydm9nNng0NjBleGkifQ.rCPMyJEmCEEFdMcOSB1R4w'; // Put Mapbox Public Access token
+    // Load a new map in the 'map' HTML div
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/supernovajon/ckoo7uw3h0obo17pil53otg0o', // style location
+        center: [-0.1, 51.5], // starting position [lng, lat]
+        zoom: 9.6 // starting zoom
+    });
+
+
+    // Create an array of the available data month
+    var months = [
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+    ];
+
+    // adding choropleth
+    map.on('load', function () {
+
+        // This is the main function that runs when the user changes the data month
+        function setMonth(month) {
+            // Change the label of the month according to the user's options
+            document.getElementById('month').textContent = months[month];  // Set the label to the correct year
+            // Gets the Property of the Overall Layer
+            var pp = map.getPaintProperty('mobility', 'fill-color');
+            // Modify the Property of the Element
+            pp.property = months[month];  // update the pp circle-radius to the new column set by the user
+            // Set the Property of a new Element
+            map.setPaintProperty('mobility', 'fill-color', pp);
+
+        }
+
+
+        map.addLayer({
+            id: 'mobility',
+            type: 'fill',
+            source: {
+                type: 'vector',
+                url: 'mapbox://supernovajon.8pjrfpx6' // tileset ID
+            },
+            'source-layer': 'mobilityavg_modified1-a37eri',
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'fill-opacity': 0.85,
+                'fill-color': {
+                    property: 'Mar',
+                    stops: [[-80, '#779ecc'], [-50, '#9fc0de'], [-20, '#f2c894'], [10, '#ffb347'], [40, '#ff985a']]
+                }
+
+
+            }
+
+
+        });
+
+
+
+        // Assign an event listner to the slider so that the setYear function runs when the user changes the slider
+        document.getElementById('slider').addEventListener('input', function (e) {
+            var month = parseInt(e.target.value);
+            setMonth(month);
+        });
+        console.log("month")
+
+
+    });
+
+    map.on('load', function () {
+        //Add the fill layer. It is not visible (opacity 0) and is used only as the basis of the hover selection
+        map.addLayer({
+            id: 'borough',
+            type: 'fill',
+            source: {
+                type: 'vector',
+                url: 'mapbox://supernovajon.8pjrfpx6' // Mapbox tileset Map ID
+            },
+            'source-layer': 'mobilityavg_modified1-a37eri', // name of tilesets
+            /*
+            'layout': {
+                'visibility': 'visible'
+            },
+            */
+            paint: {
+                'fill-color': '#66ccff',
+                'fill-opacity': 0
+            }
+        });
+
+        // Add the line highlight layer. This layer has a filter, which initially is empty.
+        map.addLayer({
+            id: 'brhighlight',
+            type: 'line',
+            source: {
+                type: 'vector',
+                url: 'mapbox://supernovajon.8pjrfpx6' // Mapbox tileset Map ID
+            },
+            'source-layer': 'mobilityavg_modified1-a37eri', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'line-color': '#adf',
+                'line-width': 4
+            },
+            filter: ['==', 'name', 'empty']
+        });
+
+    });
+
+
+
+
+    //hover highlight function
+    map.on('mousemove', function (e) {       // This is the main event listner which is triggered when the mouse moves
+        var la = map.queryRenderedFeatures(e.point, {   // This queries whether the mouse is over an object in the borough layer
+            layers: ['borough']
+        });
+
+        if (la.length == 1) {   // This if statement is run when the mouse is over a borough
+            // Filter the highlight layer to show the borough outline
+            var brnamea = document.getElementById("brnamea");
+            brnamea.innerHTML = "<div id='casetext'><h2 id=\"aaa\">" + la[0].properties.name + "</h2>"
+            map.setFilter('brhighlight', ['==', 'name', la[0].properties.name]);
+
+            // change the vaccination site number text and chart 
+            //var brname = document.getElementById("brname");
+
+            var a = new Date("2020", "02");
+            var b = new Date("2020", "03");
+            var c = new Date("2020", "04");
+            var d = new Date("2020", "05");
+            var e = new Date("2020", "06");
+            var f = new Date("2020", "07");
+            var g = new Date("2020", "08");
+            var h = new Date("2020", "09");
+            var i = new Date("2020", "10");
+            var j = new Date("2020", "11");
+
+            var mar = { date: a, value: la[0].properties.Mar };
+            var apr = { date: b, value: la[0].properties.Apr };
+            var may = { date: c, value: la[0].properties.May };
+            var jun = { date: d, value: la[0].properties.Jun };
+            var jul = { date: e, value: la[0].properties.Jul };
+            var aug = { date: f, value: la[0].properties.Aug };
+            var sep = { date: g, value: la[0].properties.Sep };
+            var oct = { date: h, value: la[0].properties.Oct };
+            var nov = { date: i, value: la[0].properties.Nov };
+            var dec = { date: j, value: la[0].properties.Dec };
+
+            var dataa = [mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
+
+            var margin = { top: 10, right: 30, bottom: 50, left: 60 },
+                width = 300 - margin.left - margin.right,
+                height = 250 - margin.top - margin.bottom;
+
+            // clear data in old svg
+            d3.select("#my_dataviz")
+                .selectAll("*")
+                .remove();
+
+            // append the svg object to the body of the page
+            var svg = d3.select("#my_dataviz")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+            var x = d3.scaleTime()
+                .domain(d3.extent(dataa, function (d) { return d.date; }))
+                .range([0, width]);
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("transform", "translate(-10,0)rotate(-45)")
+                .style("text-anchor", "end");
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([-80, 40])
+                .range([height, 0]);
+            svg.append("g")
+                .call(d3.axisLeft(y));
+            svg.append("path")
+                .datum(dataa)
+                .attr("fill", "none")
+                .attr("stroke", "rgba(255,152,90, 0.85)")
+                .attr("stroke-width", 1.5)
+                .attr("d", d3.line()
+                    .x(function (d) { return x(d.date) })
+                    .y(function (d) { return y(d.value) })
+                )
+
+            // Add the points
+            svg.append("g")
+                .selectAll("dot")
+                .data(dataa)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d) { return x(d.date) })
+                .attr("cy", function (d) { return y(d.value) })
+                .attr("r", 5)
+                .attr("fill", "rgba(119,158,204, 0.85)")
+        }
+
+        else {
+            map.setFilter('brhighlight', ['==', 'name', 'null']);
+
+
+            var brnamea = document.getElementById("brnamea");
+            brnamea.innerHTML = "<h2 id=\'aaa\'>London</h2>";
+
+            var brname = document.getElementById("brname");
+            brname.innerHTML = "<div id=\'my_dataviz\'></div>";
+            //brname.appendChild(my_dataviz);
+
+
+            // clear data in old svg
+            //d3.select("#my_dataviz")
+            //    .selectAll("*")
+            //    .remove();
+
+            var margin = { top: 10, right: 30, bottom: 50, left: 60 },
+                width = 300 - margin.left - margin.right,
+                height = 250 - margin.top - margin.bottom;
+
+            // append the svg object to the body of the page
+            var svg = d3.select("#my_dataviz")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+            //Read the data
+            d3.csv("https://raw.githubusercontent.com/YYZ2021/group/main/mobility_London.csv",
+
+                // When reading the csv, I must format variables:
+                function (d) {
+                    return { date: d3.timeParse("%Y-%m")(d.date), value: d.value }
+                },
+
+                // Now I can use this dataset:
+                function (data) {
+
+                    // Add X axis --> it is a date format
+                    var x = d3.scaleTime()
+                        .domain(d3.extent(data, function (d) { return d.date; }))
+                        .range([0, width]);
+                    svg.append("g")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(d3.axisBottom(x))
+                        .selectAll("text")
+                        .attr("transform", "translate(-10,0)rotate(-45)")
+                        .style("text-anchor", "end");
+
+
+                    // Add Y axis
+                    var y = d3.scaleLinear()
+                        .domain([-80, 40])
+                        .range([height, 0]);
+                    svg.append("g")
+                        .call(d3.axisLeft(y));
+                    svg.append("path")
+                        .datum(data)
+                        .attr("fill", "none")
+                        .attr("stroke", "rgba(119,158,204, 0.85)")
+                        .attr("stroke-width", 1.5)
+                        .attr("d", d3.line()
+                            .x(function (d) { return x(d.date) })
+                            .y(function (d) { return y(d.value) })
+                        )
+
+                    // Add the points
+                    svg.append("g")
+                        .selectAll("dot")
+                        .data(data)
+                        .enter()
+                        .append("circle")
+                        .attr("cx", function (d) { return x(d.date) })
+                        .attr("cy", function (d) { return y(d.value) })
+                        .attr("r", 5)
+                        .attr("fill", "rgba(255,152,90, 0.85)")
+
+                })
+
+
+
+        }
+    });
+
+
+</script>
+
+
+
+</html>

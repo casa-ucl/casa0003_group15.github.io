@@ -1,0 +1,666 @@
+<!-- The interactive mapping website is based on 'Mapbox_example9', one of the practical 2 exercises.-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- title of the webpage -->
+    <title>London Cases and Deaths</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* position and size of map container */
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        /* style of the popup */
+        .mapboxgl-popup {
+            max-width: 10px;
+            font: 10px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+
+        h1 {
+            position: absolute;
+            top: 0px;
+            left: 10px;
+            color: whitesmoke;
+            font-weight: bolder;
+            font-size: 2em;
+        }
+
+        .map-overlay h2 {
+            line-height: 50px;
+            display: block;
+            margin: 0 0 0 0px;
+        }
+
+        h3 {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 12px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+
+        h4 {
+            margin: 0;
+            color: #333;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        h5 {
+            margin: 0;
+            color: #333;
+            font-weight: normal;
+            font-size: 0.85em;
+        }
+
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 400px;
+            min-width: 410px;
+            top: 0;
+            left: 0;
+            padding: 10px;
+        }
+
+
+        .map-overlay .map-overlay-inner {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .map-overlay input {
+            background-color: transparent;
+            display: inline-block;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            cursor: ew-resize;
+        }
+
+        .map-overlay label {
+            font: 13px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            vertical-align: bottom;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .map-overlay .map-overlay-buttom {
+            display: flex;
+            flex-direction: row;
+        }
+
+        h2#aaa {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+
+        h3#bbb {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+
+        .map-text-right {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: relative;
+            width: 300px;
+            min-width: 380px;
+            top: 0;
+            left: 0px;
+            padding: 0px;
+            float: right;
+        }
+
+        .map-text-right .map-text-right-inner {
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.9);
+
+        }
+
+        svg {
+            position: relative;
+            top: 10px;
+        }
+
+        .map-discription {
+            float: right;
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        h2#nnn {
+            margin: 20px 30px 12px 30px;
+            padding: 0;
+            font: 20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        h3#mmm {
+            margin: 0px 30px 0px 30px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: justify;
+        }
+
+        h3#ooo {
+            margin: 12px 30px 10px 30px;
+            padding: 0;
+            font: 18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #C0392B;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        h3#oooo {
+            margin: 12px 30px 10px 30px;
+            padding: 0;
+            font: 18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #00aedb;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        h3#ppp {
+            margin: 0px 30px 15px 0px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        h3#rrr {
+            margin: 0px 30px 15px 30px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: justify;
+            font-weight: bold;
+        }
+
+        h3#qqq {
+            margin: 0px 0px 0px 30px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: left;
+        }
+
+        h3#ttt {
+            margin: 0px 30px 0px 0px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: right;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="map"></div>
+
+    <div class='map-text-right'>
+        <div class='map-text-right-inner'>
+            <div class='map-discription'>
+                <br><br><br>
+
+                <h3 id='ooo'>Waves of COVID-19 pandemic</h3>
+
+                <h3 id='ttt'>Mar 2020 - Apr 2020</h3>
+                <h3 id='ppp'>First outbreak</h3>
+                
+                <h3 id='ttt'>Oct 2020 - Dec 2020</h3>
+                <h3 id='ppp'>Resurgence</h3>
+                
+                <h3 id='ttt'>Dec 2020 - Feb 2021</h3>
+                <h3 id='ppp'>Surge</h3>
+                
+                <h3 id='ttt'>Feb 2021 - Apr 2021</h3>
+                <h3 id='ppp'>Mitigation</h3>
+
+                <br><br><br>
+
+                <h3 id='oooo'>Policies for COVID-19 restriction</h3>
+                <h3 id='qqq'>Since 20/Mar/2020</h3>
+                <h3 id='rrr'>School closures began</h3>
+                
+                <h3 id='qqq'>Since 01/May/2020</h3>
+                <h3 id='rrr'>Minimise contact with people over 70s</h3>
+                
+                <h3 id='qqq'>Since 02/Dec/2020</h3>
+                <h3 id='rrr'>On track to vaccinate all people 50+ by early May</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-overlay top">
+        <div class="map-overlay-inner">
+            <h2>Monthly New COVID-19 Deaths in London</h2>
+            <!-- time slider -->
+
+            <label class="timestamps" id="timestamps"></label>
+            <input id="slider" type="range" min="0" max="12" step="1" value="0">
+            <datalist id="tickmarks">
+                <option value="0" label="Mar">
+                <option value="1">
+                <option value="2">
+                <option value="3">
+                <option value="4" label="Apr">
+                <option value="5">
+                <option value="6">
+                <option value="7">
+                <option value="8" label="Aug">
+                <option value="9">
+                <option value="10">
+                <option value="11">
+                <option value="12" label="Dec">
+            </datalist>
+
+            <tr>
+                <td width="200" align="left">
+                    <div style="width:200px;height:0px;">
+
+                        <br />
+                        <h3>Proportional Symbol Legend: </h3>
+                        <!-- proportional symbol/circle legend-->
+                        <!-- inspired by the design of https://www.usatoday.com/in-depth/graphics/2020/03/10/us-coronavirus-map-tracking-united-states-outbreak/4945223002/-->
+
+                        <svg overflow="hidden" width="150" height="150" style="touch-action: none;">
+
+                            <circle fill='rgb(230, 0, 0)' fill-opacity="0.15" stroke='red' stroke-opacity="1"
+                                stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4"
+                                cx="40" cy="50" r="50" fill-rule="evenodd"
+                                transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,15.00000000,15.00000000)">
+                            </circle>
+
+                            <circle fill='rgb(230, 0, 0)' fill-opacity="0.15" stroke='red' stroke-opacity="1"
+                                stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4"
+                                cx="40" cy="60" r="40" fill-rule="evenodd"
+                                transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,15.00000000,15.00000000)">
+                            </circle>
+
+                            <circle fill='rgb(230, 0, 0)' fill-opacity="0.15" stroke='red' stroke-opacity="1"
+                                stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4"
+                                cx="40" cy="69" r="30" fill-rule="evenodd"
+                                transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,15.00000000,15.00000000)">
+                            </circle>
+
+                            <circle fill='rgb(230, 0, 0)' fill-opacity="0.15" stroke='red' stroke-opacity="1"
+                                stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4"
+                                cx="45" cy="83" r="20" fill-rule="evenodd"
+                                transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,10.00000000,10.00000000)">
+                            </circle>
+
+                            <circle fill='rgb(230, 0, 0)' fill-opacity="0.15" stroke='red' stroke-opacity="1"
+                                stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4"
+                                cx="45" cy="93" r="10" fill-rule="evenodd"
+                                transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,10.00000000,10.00000000)">
+                            </circle>
+
+                        </svg>
+                    </div>
+                </td>
+                <td>
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td align="center">
+                                    <!-- <h4>Corresponding Values of COVID Cases <br /> to the boundaries of outer to inner circles:</h4> -->
+                                    <h5><br />
+                                        <br />
+                                        Values
+                                        <br /> 50
+                                        <br /> 40
+                                        <br /> 30
+                                        <br /> 20
+                                        <br /> 10
+                                    </h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <br />
+
+
+            <h2>Accumulative Death Cases</h2>
+
+            <div class=brstructure>
+                <div class='map-overlay-buttom' id="brname">
+                    <div id="my_dataviz"></div>
+                    <div id='deathtext'>
+                        <h2 id='aaa'>London</h2>
+                        <h3 id="bbb">01/04/2020: 709<br />01/05/2020: 995<br />01/06/2020: 1328<br />01/07/2020:
+                            1342<br />01/08/2020: 1348<br />01/09/2020: 1356<br />01/10/2020: 1360<br />01/11/2020:
+                            1390<br />01/12/2020: 1469<br />01/01/2021: 1750<br />01/02/2021: 1893<br />01/03/2021:
+                            1937<br />01/04/2021: 1943</h3>
+                    </div>
+                </div>
+            </div>
+
+
+            <p class="credit">Coronavirus death data: <a
+                    href="https://data.london.gov.uk/dataset/coronavirus--covid-19--deaths/">NHS</a>.
+                London borough data: <a href="https://data.london.gov.uk/dataset/london_boroughs">GLA</a>.
+            </p>
+        </div>
+
+    </div>
+
+
+</body>
+
+
+
+<script>
+
+    var dataviz = document.getElementById("dataviz");
+    var my_dataviz = document.getElementById("my_dataviz");
+    var deathtext = document.getElementById("deathtext");
+
+    // set the dimensions and margins of the graph
+    var margin = { top: 30, right: 30, bottom: 70, left: 60 },
+        width = 260 - margin.left - margin.right,
+        height = 260 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    // Parse the Data
+    d3.csv("https://raw.githubusercontent.com/YYZ2021/group/main/death_London.csv", function (data) {
+        console.log(data);
+        // X axis
+        var x = d3.scaleBand()
+            .range([0, width])
+            .domain(data.map(function (d) { return d.date; }))
+            .padding(0.2);
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x))
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end");
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain([0, 2000])
+            .range([height, 0]);
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        // Bars
+        svg.selectAll("mybar")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("x", function (d) { return x(d.date); })
+            .attr("y", function (d) { return y(d.value); })
+            .attr("width", x.bandwidth())
+            .attr("height", function (d) { return height - y(d.value); })
+            .attr("fill", "rgba(230, 0, 0,0.8)")
+
+    })
+
+
+    /// Set the background layer: London Borough Map
+    mapboxgl.accessToken =
+        'pk.eyJ1IjoibGluZ3J1ZmVuZyIsImEiOiJja2syZmoxaGowaXZoMzJxbzdjYm83enluIn0.ddM9J2lcLfGXLxDDIGV17A'; // mapbox accesstoken
+
+    /// Create a map
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/lingrufeng/ckoe81lyq25qs19lks2cywv17', // style API location
+        center: [-0.1, 51.5], // initial position [longitude, latitude]
+        zoom: 9.6 // initial zoom level
+    });
+
+    // Add a zoom control to the map
+    map.addControl(new mapboxgl.NavigationControl());
+
+
+    // Deal with date
+    map.on('load', function () {
+        d3.json(
+            'https://raw.githubusercontent.com/YYZ2021/group/main/monthly_death.geojson', // read geojson file
+            function (error, data) {
+                if (error) throw error; // inspired by https://docs.mapbox.com/mapbox-gl-js/example/timeline-animation/
+
+                var date = [];
+                header = Object.keys(data.features[0].properties) // return an array of columns' header name shown in the geojson file.
+                date = header.slice(2, header.length) // select from the third attribute in the array so that we can get the attributes for dates ranging from '22/01/2020' to '28/02/2021'.
+
+                var Initialdate = 'April 2020';
+
+                map.addSource('case', {
+                    'type': 'geojson',
+                    data: data
+                });
+
+
+                // This is the function for drawing the proportional symbols/circles for absolute confirmed cases for boroughs by day_i
+                function addnewLayer(day_i) {
+                    map.addLayer({
+                        'id': 'circles',
+                        'type': 'circle',
+                        'source': 'case',
+                        'paint': {
+                            'circle-color': 'red',
+                            'circle-opacity': 0.3,
+
+                            /* Scale the radius of proportional symbol/circle. */
+                            'circle-radius': [
+                                'interpolate',
+                                ['linear'],
+                                ['number', ['get', day_i]],
+                                0,
+                                0,
+                                50,
+                                50
+                            ],
+                            'circle-stroke-width': 0.65,
+                            'circle-stroke-color': 'red'
+
+                        }
+                    })
+                };
+
+                addnewLayer(Initialdate) // Let the layer of proportional symbols run from '11/02/2020'
+
+
+                function filterBy(i) {
+                    map.removeLayer('circles')
+                    addnewLayer(date[i], 1)
+                    document.getElementById('timestamps').textContent = date[i];
+                }
+
+                filterBy(0) // When opening the webpage, the time slider can be stopped in the first day for the dataset: 22/01/2020
+
+                document
+                    .getElementById('slider')
+                    .addEventListener('input', (e) => {
+                        var i = parseInt(e.target.value);
+                        filterBy(i);
+
+                    });
+
+            });
+
+
+
+
+
+        //Add the fill layer. It is not visible (opacity 0) and is used only as the basis of the hover selection
+        map.addLayer({
+            id: 'borough',
+            type: 'fill',
+            source: {
+                type: 'vector',
+                url: 'mapbox://lingrufeng.08ifjg22' // Mapbox tileset Map ID
+            },
+            'source-layer': 'death_monthly_basemap-cic4ze', // name of tilesets
+            /*
+            'layout': {
+                'visibility': 'visible'
+            },
+            */
+            paint: {
+                'fill-color': '#66ccff',
+                'fill-opacity': 0
+            }
+        });
+
+        // Add the line highlight layer. This layer has a filter, which initially is empty.
+        map.addLayer({
+            id: 'brhighlight',
+            type: 'line',
+            source: {
+                type: 'vector',
+                url: 'mapbox://lingrufeng.08ifjg22' // Mapbox tileset Map ID
+            },
+            'source-layer': 'death_monthly_basemap-cic4ze', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'line-color': '#adf',
+                'line-width': 4
+            },
+            filter: ['==', 'name', 'empty']
+        });
+    });
+
+    //hover highlight function
+    map.on('mousemove', function (e) {       // This is the main event listner which is triggered when the mouse moves
+        var la = map.queryRenderedFeatures(e.point, {   // This queries whether the mouse is over an object in the borough layer
+            layers: ['borough']
+        });
+
+
+        if (la.length == 1) {   // This if statement is run when the mouse is over a borough
+            // Filter the highlight layer to show the borough outline
+            map.setFilter('brhighlight', ['==', 'name', la[0].properties.name]);
+            // brname2.innerHTML = "<h2>" + la[0].properties.name + "</h2>"
+            // change the vaccination site number text and chart 
+            var brname = document.getElementById("brname");
+            brname.innerHTML = "<div id='deathtext'><h2 id=\"aaa\">" + la[0].properties.name + "</h2><h3 id=\"bbb\">01/04/2020:" + + la[0].properties.aapr + "<br />01/05/2020:" + la[0].properties.amay + "<br />01/06/2020: " + la[0].properties.ajun + "<br />01/07/2020: " + la[0].properties.ajul + "<br />01/08/2020: " + la[0].properties.aaug + "<br />01/09/2020: " + la[0].properties.asep + "<br />01/10/2020: " + la[0].properties.aoct + "<br />01/11/2020: " + la[0].properties.anov + "<br />01/12/2020: " + la[0].properties.adec + "<br />01/01/2021: " + la[0].properties.bjan + "<br />01/02/2021: " + la[0].properties.bfeb + "<br />01/03/2021: " + la[0].properties.bmar + "<br />01/04/2021: " + la[0].properties.bapr + "</h3></div><div id=\"my_dataviz\"></div>";
+
+            var dic = { "Group": la[0].properties.name, "01/03/2020": la[0].properties.amar, "01/04/2020": la[0].properties.aapr, "01/05/2020": la[0].properties.amay, "01/06/2020": la[0].properties.ajun, "01/07/2020": la[0].properties.ajul, "01/08/2020": la[0].properties.aaug, "01/09/2020": la[0].properties.asep, "01/10/2020": la[0].properties.aoct, "01/11/2020": la[0].properties.anov, "01/12/2020": la[0].properties.adec, "01/01/2021": la[0].properties.bjan, "01/02/2021": la[0].properties.bfeb, "01/03/2021": la[0].properties.bmar, "01/04/2021": la[0].properties.bapr, "01/05/2021": la[0].properties.bmay }
+            var aapr = { date: "01/04/2020", value: la[0].properties.aapr };
+            var amay = { date: "01/05/2020", value: la[0].properties.amay };
+            var ajun = { date: "01/06/2020", value: la[0].properties.ajun };
+            var ajul = { date: "01/07/2020", value: la[0].properties.ajul };
+            var aaug = { date: "01/08/2020", value: la[0].properties.aaug };
+            var asep = { date: "01/09/2020", value: la[0].properties.asep };
+            var aoct = { date: "01/10/2020", value: la[0].properties.aoct };
+            var anov = { date: "01/11/2020", value: la[0].properties.anov };
+            var adec = { date: "01/12/2020", value: la[0].properties.adec };
+            var bjan = { date: "01/01/2021", value: la[0].properties.bjan };
+            var bfeb = { date: "01/02/2021", value: la[0].properties.bfeb };
+            var bmar = { date: "01/03/2021", value: la[0].properties.bmar };
+            var bapr = { date: "01/04/2021", value: la[0].properties.bapr };
+            var data = [aapr, amay, ajun, ajul, aaug, asep, aoct, anov, adec, bjan, bfeb, bmar, bapr]
+
+
+            // set the dimensions and margins of the graph
+            var margin = { top: 30, right: 30, bottom: 70, left: 60 },
+                width = 260 - margin.left - margin.right,
+                height = 260 - margin.top - margin.bottom;
+
+            // clear data in old svg
+            d3.select("#my_dataviz")
+                .selectAll("*")
+                .remove();
+
+            // append the svg object to the body of the page
+            var svg = d3.select("#my_dataviz")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+            // X axis
+            var x = d3.scaleBand()
+                .range([0, width])
+                .domain(data.map(function (d) { return d.date; }))
+                .padding(0.2);
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("transform", "translate(-10,0)rotate(-45)")
+                .style("text-anchor", "end");
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([0, 160])
+                .range([height, 0]);
+            svg.append("g")
+                .call(d3.axisLeft(y));
+
+
+            // Bars
+            svg.selectAll("mybar")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("x", function (d) { return x(d.date); })
+                .attr("y", function (d) { return y(d.value); })
+                .attr("width", x.bandwidth())
+                .attr("height", function (d) { return height - y(d.value); })
+                .attr("fill", "rgba(230, 0, 0,0.8)")
+        }
+        // else remain London text and chart
+        else {
+            map.setFilter('brhighlight', ['==', 'name', 'null']);
+            var brname = document.getElementById("brname");
+            brname.innerHTML = ""
+            brname.appendChild(my_dataviz);
+            brname.appendChild(deathtext);
+        }
+    });
+
+
+</script>
+
+</html>

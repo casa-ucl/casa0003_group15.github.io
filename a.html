@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+
+    <!-- Custom fonts for this template -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="./css/london.css" rel="stylesheet">
+
+
+    <style>
+        .box {
+            border: 1px solid grey;
+            background-color: #d3d3d3;
+
+        }
+
+        body {
+            font: 12px Helvetica;
+        }
+
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .x.axis path {
+            display: none;
+        }
+
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 2px;
+        }
+
+        .aaa {
+            text-align: justify;
+            color: #333;
+            margin-left: 15%;
+            margin-right: 15%;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+
+        .bbb {
+            text-align: center;
+            color: #333;
+            font: 25px "Lucida Console", monospace;
+            font-weight: bold;
+        }
+
+        .ccc {
+            color: #333;
+            margin-left: 10%;
+            margin-right: 10%;
+            font: 12px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+
+        .ddd {
+            background-color: #ffffff;
+        }
+
+        .eee {
+            position: relative;
+            top: 0px;
+            left: 0px;
+            height: 80px;
+            width: 100hv;
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        .mmm {
+            height: 45px;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+
+        .ooo {
+            height: 650px;
+            max-width: 90hv;
+            font: 25px "Lucida Console", monospace;
+            margin-left: 20%;
+            margin-right: 20%;
+            text-align: center;
+            color: #333;
+            margin-top: 8%;
+            font-weight: bold;
+        }
+
+        .oooo {
+            font: 25px "Lucida Console", monospace;
+            margin-left: 15%;
+            margin-right: 15%;
+            text-align: center;
+            margin-top: 8%;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .ooooo {
+            height: 480px;
+            max-width: 90hv;
+            font: 25px "Lucida Console", monospace;
+            margin-left: 20%;
+            margin-right: 20%;
+            text-align: center;
+            color: #333;
+            margin-top: 13%;
+            font-weight: bold;
+        }
+
+        .xxx {
+            text-align: right;
+            margin-right: 3%;
+        }
+
+        .zzz {
+            font: 25px "Lucida Console", monospace;
+            margin-left: 15%;
+            margin-right: 3%;
+            margin-top: 5%;
+            text-align: right;
+        }
+
+        .qqq {
+            background-size: cover;
+            background: url(./img/London.jpg);
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .qqqq {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background: url(./img/London2.jpg);
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .mmmm {
+            font: 25px "Lucida Console", monospace;
+            margin-left: 15%;
+            margin-right: 15%;
+            text-align: center;
+            margin-top: 30%;
+            margin-bottom: 30%;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .spanorange {
+            color: orange;
+        }
+
+        .spanred {
+            color: #d62d20;
+        }
+
+        .spanmobility {
+            color: rgb(255, 179, 71);
+        }
+
+        .spanvaccinrate {
+            color: #3b5998;
+        }
+
+        .spanpoint {
+            color: #8ec127;
+        }
+
+        a.navbar-brand {
+            font: 15px "Lucida Console", monospace;
+            font-weight: bold;
+        }
+
+        a.nav-link {
+            font: 13px "Lucida Console", monospace;
+        }
+
+        .grouppp {
+            color: aliceblue;
+        }
+    </style>
+    <title>How life has changed after pandemic</title>
+</head>
+
+<body>
+
+    <!-- nav bar  data-spy="scroll" data-target=".navbar" data-offset="50"-->
+    <nav id="navbar-example2" class="navbar navbar-light bg-light px-3 fixed-top">
+        <a class="navbar-brand" href="#">How life has changed after COVID-19 pandemic</a>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="#scrollspyHeading1">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#scrollspyHeading2">Intro</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#scrollspyHeading3">Global Cases</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#scrollspyHeading4">London Cases</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#scrollspyHeading5">London Deaths</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#scrollspyHeading6">London Mobility</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                    aria-expanded="false">Vacinnation</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#scrollspyHeading7">Sites</a></li>
+                    <li><a class="dropdown-item" href="#scrollspyHeading8">Percentages</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#scrollspyHeading9">Contributers</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header 
+    <div class="container"></div>-->
+    <h4 id="scrollspyHeading1" class="top-left"></h4>
+    <header class="masthead">
+        <img src="./img/London.jpg" alt="london" height="830px" width="100%" frameborder="0">
+
+        <div class="centered"></a>
+            <div class="container d-flex h-100 align-items-center">
+                <div class="container">
+                    <h1><br><br><br><br><br>Londoners</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5"></h2>
+                    <a href="#scrollspyHeading2" class="btn btn-primary ">Start</a>
+                </div>
+            </div>
+
+    </header>
+
+    <!-- Introduction Section -->
+    <section id="scrollspyHeading2">
+        <br><br><br><br><br><br>
+        <div class='eee'></div>
+        <div class="container">
+            <!-- Pic1 -->
+            <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+                <div class="col-lg-6">
+                    <img class="img-fluid" src="./img/London2.jpg" alt="" width="100%">
+                </div>
+                <div class="col-lg-6">
+                    <div class="bg-black text-center h-100 project">
+                        <div class="d-flex h-100">
+                            <div class="ddd">
+                                <div class="project-text w-100 my-auto text-center text-lg-left">
+                                    <h4 class="bbb"><br>Covid-19</h4>
+                                    <p class="aaa">Coronavirus disease 2019
+                                        (COVID-19), also known as the coronavirus, or COVID, is an infectious disease
+                                        caused by a newly discovered coronavirus (SARS-CoV-2). The disease has spread
+                                        worldwide, leading to an ongoing pandemic. This pandemic has reached almost
+                                        every country in the world, counting 220 Countries and Territories around the
+                                        world have been affected. As of 14th may, there were reported a total of
+                                        160,813,869 confirmed cases Globally, including 3,339,002 deaths according to
+                                        the WHO. As of 11 May 2021, a total of 1,264,164,553 vaccine doses have been
+                                        administered.The world has been heavily affected by the pandemic, as COVID‐19 is
+                                        characterized by its rapid human‐to‐human transmission and the potential of
+                                        asymptomatic cases to infect others. Many countries implemented social isolation
+                                        measures to reduce community spread, these are termed as “quarantine” or “social
+                                        distancing”.<br><br><br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+            <!-- Pic2 -->
+            <div class="row justify-content-center no-gutters">
+                <div class="col-lg-6">
+                    <img class="img-fluid" src="./img/London3.jpg" alt="" width="100%">
+                </div>
+                <div class="col-lg-6 order-lg-first">
+                    <div class="bg-black text-center h-100 project">
+                        <div class="d-flex h-100">
+                            <div class="ddd">
+                                <div class="project-text w-100 my-auto text-center text-lg-right">
+                                    <h4 class="bbb"><br><br><br>United Kingdom</h4>
+                                    <p class="aaa">The virus reached the UK in late
+                                        January 2020. As of 24 March 2021, there have been 4.4 million cases confirmed
+                                        and 127,543 deaths overall among people who had recently tested positive – the
+                                        world's fourteenth-highest death rate by population, the highest death toll in
+                                        Europe according to the Times. BBC states that Coronavirus’ spread has left
+                                        national economies and businesses counting the costs, as governments struggle
+                                        with new lockdown measures to tackle the spread of the virus Despite the
+                                        development of new vaccines, many are still wondering what recovery could look
+                                        like.</p><br><br><br><br>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        </div>
+    </section>
+
+    <!-- Global_cases Section -->
+    <section id="scrollspyHeading3">
+        <div class='mmm'></div>
+
+
+        <div class='ooo'>
+            <img src="./img/globe.svg" width="200">
+            <p><br>Before we dive into to the UK COVID situation, why don’t we start by having a general overview of how
+                the <span class='spanred'>global COVID situation</span> had evolved? 
+            </p>
+        </div>
+
+
+    </section>
+
+    <br>
+    <br>
+    </h4>
+    <p>
+    <div class="flourish-embed flourish-bar-chart-race" data-src="visualisation/6093408">
+        <script src="https://public.flourish.studio/resources/embed.js"></script>
+    </div>
+    </p>
+    <!-- Button trigger modal -->
+    <p class="zzz">Here is a side knowledge of global cases for you!</p>>
+    <div class="xxx">
+        <button id="buttom-knowledge" type="button" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#myModal">
+            click me
+        </button>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                </div>
+                <div class="modal-body" id="myModal">
+                    <h4><a data-toggle="modal" data-target="#myModal">
+                            <p>The global covid cases has seen unprecedented outbreak at the beginning of Apr as
+                                illustrated by the bar
+                                race. Many countries were caught off-guard by covid-19 and the US has become the first
+                                country to pass the 3
+                                million threshold after failing to contain the virus as accused by many critics. </p>
+                            <p>Every country’s policy in addressing the issue has become the focus of the public.
+                                In the UK. The response is still fairly swift, and the national lockdown was first
+                                introduced 23 Mar 2020.
+                                but the true extent of the first outbreaks in 2020 is unclear because testing was not
+                                then widely available.
+                                Hence, the policies to have large coverage of testing had become one of the foremost
+                                solutions of UK
+                                government to tackle this matter.
+                            </p>
+                        </a></h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <!-- London_cases Section -->
+    <section id="scrollspyHeading4">
+        <div class='mmm'></div>
+
+        <br>
+        <div class="ooo">
+            <img src="./img/case.svg" width="200">
+            <p><br>Cases in the United Kingdom took an interesting roller-coaster ride. <br><br>Let’s see focus on <span
+                    class='spanorange'>cases
+                    in London</span> to see what is happening during and after that period.<br><br>
+            </p>
+
+        </div>
+    </section>
+
+    <br><br>
+    <iframe src="case_final.html" height="850px" width="100%" frameborder="0" scrolling="yes"></iframe></p>
+
+
+    </div>
+    <!-- London_death Section -->
+    <section id="scrollspyHeading5">
+        <div class='mmm'></div>
+
+        <div class="ooo">
+            <img src="./img/case_death2.svg" width="200">
+            <p><br>What about <span class="spanred">death case</span>?
+            </p>
+        </div>
+
+    </section>
+
+    <div class='mmm'></div>
+    <iframe src="death_final.html" height="850px" width="100%" frameborder="0" scrolling="yes"></iframe></p>
+    </div>
+
+    <!-- London_Mobility Section -->
+    <section id="scrollspyHeading6">
+        <div class='mmm'></div>
+
+        <div class="ooo">
+            <img src="./img/mobility.svg" width="200">
+            <p><span class="spanmobility"><br>Mobility</span> reports indicate how Londoner’s movement has been affected
+                by the pandemic.
+                <br><br>
+                A choropleth map below aids the report which shows the change in each London borough.<br><br>
+                Wouldn’t it be nice to see how Londoners’ mobility changes? <br><br>Please see the choropleth map
+                below!
+            </p>
+
+        </div>
+    </section>
+    <br><br>
+    <p>
+        <iframe src="activity_final.html" height="850px" width="100%" frameborder="0" scrolling="yes"></iframe>
+    </p>
+    <br><br>
+    <!-- London_Vacinnation Section -->
+    <section id="scrollspyHeading7">
+        <div class='mmm'></div>
+
+        <div class="ooo">
+            <img src="./img/vaccination_site.svg" width="200">
+            <p><br>Increases in cases in London and the UK as a whole dropped a lot. <br><br>Lockdown and vaccination
+                must play
+                a huge row in this. <br><br>Want to know <span class="spanpoint">where to take vaccines</span>?
+                <br><br>Please scroll down!
+            </p>
+
+        </div>
+    </section>
+    <p><br><br><br><br>
+        <!-- <h1>Sites</h1> 	-->
+        <!--Vacinnation sites 	-->
+        <iframe src="vaccination_site_london_final.html" height="850px" width="100%" frameborder="0"
+            scrolling="yes"></iframe>
+
+    </p>
+
+    <!-- London_Pecentages Section -->
+    <section id="scrollspyHeading8">
+        <div class='mmm'></div>
+
+        <div class="ooo">
+            <img src="./img/vaccination_rate.svg" width="200">
+            <p><br>There are more vaccination sites in central London boroughs than the outer boroughs.<br><br> Does it
+                mean
+                central London has a higher <span class="spanvaccinrate">vaccination rate</span>?</p>
+        </div>
+
+    </section>
+
+    <br><br>
+    <iframe src="percent.html" height="850px" width="100%" frameborder="0" scrolling="yes"></iframe>
+
+    <div class="qqqq"></div>
+    <div class="ooooo">
+        <img src="./img/story.svg" width="200">
+        <p><br>The stroy of COVID-19 is still going on...</p>
+    </div>
+
+    <!-- Contact Section  -->
+    <section id="scrollspyHeading9">
+        <div class='mmm'></div>
+        <div class="qqq"></div>
+        <div class="oooo">
+            <img src="./img/casa.svg" width="200">
+            <p><br>We are a lovely team to construct this website:
+                <br><br>
+                Jinjin Bai, Jiahao Chen, Lingru Feng and Yunzhi Yang<br><br>
+                from CASA, UCL<br><br><span class="grouppp">Group 15</span>
+                <br><br>
+                Thank you for watching!
+            </p>
+        </div>
+
+        <div class="social d-flex justify-content-center">
+            <a href="https://github.com" class="mx-2">
+                <img src="./img/Github.png" height="30" width="30">
+            </a>
+        </div>
+
+
+    </section>
+
+
+</body>
+
+</html>

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>Vaccination Site</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <meta charset="utf-8">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #legtext {
+            margin: 10px 0px 8px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+
+        #legtext2 {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 380px;
+            min-width: 380px;
+            top: 0;
+            left: 0;
+            padding: 10px;
+        }
+
+        .map-overlay .map-overlay-inner {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .map-overlay table {
+            border: none;
+            width: 100%;
+        }
+
+        .map-overlay h2 {
+            line-height: 50px;
+            display: block;
+            margin: 0 0 0 0px;
+        }
+
+        .map-overlay label {
+            font: 16px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            vertical-align: bottom;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .map-overlay p.credit {
+            margin: 0;
+            padding: 0;
+        }
+
+        .map-overlay input {
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            margin: 5px;
+            padding: 0;
+        }
+
+        .map-overlay label.A {
+            color: #ff4e50;
+        }
+
+        .map-overlay label.B {
+            color: #66ccff;
+        }
+
+        .map-overlay label.C {
+            color: #fc913a;
+        }
+
+        .map-overlay label.D {
+            color: #8ec127;
+        }
+
+        .map-overlay .map-overlay-buttom h2 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .map-overlay .map-overlay-buttom h3 {
+            margin: 0;
+            padding: 0;
+            font: 16px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+
+        .map-overlay .map-overlay-buttom {
+            display: flex;
+            flex-direction: row;
+        }
+
+        div#vaccintext {
+            margin: 60px 0 0 0;
+            width: 180px;
+        }
+
+        div#vaccintext h2 {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+
+        div#vaccintext h3 {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+
+        h2#aaa {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+
+        h3#bbb {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+
+        .map-text-right {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: relative;
+            width: 300px;
+            min-width: 380px;
+            top: 0;
+            left: 0px;
+            padding: 0px;
+            float: right;
+        }
+
+        .map-text-right .map-text-right-inner {
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.9);
+
+        }
+
+        .map-discription {
+            float: right;
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        h2#nnn {
+            margin: 20px 30px 3px 30px;
+            padding: 0;
+            font: 20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #ff4e50;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        h2#ooo {
+            margin: 20px 30px 3px 30px;
+            padding: 0;
+            font: 20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #fc913a;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        h2#ppp {
+            margin: 20px 30px 3px 30px;
+            padding: 0;
+            font: 20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #8ec127;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        h3#mmm {
+            margin: 0px 30px 0px 30px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: justify;
+        }
+
+        .href {
+            color: 	#189ad3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id='map'></div>
+
+    <div class='map-text-right'>
+        <div class='map-text-right-inner'>
+            <div class='map-discription'>
+                <h2 id='nnn'>Vaccination</h2>
+                <h3 id='mmm'>Vaccination at a massive scale is crucial to quickly manage the spread of the virus and
+                    relieve symptoms of infection. According to the <a class='href'
+                        href="https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/955548/Greenbook_chapter_14a_v6.pdf">Green
+                        Book of COVID-19</a>, currently, candidate SARS-CoV-2 vaccines such as Pfizer-BioNTech COVID-19
+                    vaccine
+                    and AstraZeneca COVID-19 vaccine have shown about 95% clinical efficacy in phase 3 safety trials.
+                </h3>
+                <h2 id='ooo'>Immunisation Programme</h2>
+                <h3 id='mmm'>As the COVID-19 pandemic sweeping the world, Britain began to implement nationwide
+                    vaccination to achieve herd immunity. The COVID-19 immunisation programme in the UK is the world's
+                    first mass immunisation campaign to protect against SARS-CoV-2 using vaccines developed in response
+                    to the COVID-19 pandemic. In London, hundreds of clinic places such as pharmacies, hospital hubs and
+                    Primary Care Networks (PCNs) have been transferred to vaccination sites to cover the demand of
+                    vaccine services.</h3>
+                <h2 id='ppp'>Vaccination Priority</h2>
+                <h3 id='mmm'>Since the elderly and people with underlying health conditions are more like to suffer and die from the infection,
+                    according to <a class='href'
+                        href="https://www.gov.uk/government/publications/covid-19-vaccination-care-home-and-healthcare-settings-posters/covid-19-vaccination-first-phase-priority-groups">the
+                        priority group
+                    </a> set by the government, people who are at high risk of severe
+                    illness, such as the elderly will be given priority to be vaccinated.</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class='map-overlay top'>
+        <div class='map-overlay-inner'>
+            <h2>London Vaccination Site</h2>
+            <table>
+                <tr>
+                    <td>
+                        <div id='legend'>
+                            <div id='legtext2'>
+                                Choose layer to vasualize:
+                            </div>
+                            <input type="checkbox" name="layers" id="layer1" value="Pharmacy" checked><label
+                                class="A">Pharmacy&nbsp;<br /></label>
+                            <input type="checkbox" name="layers" id="layer2" value="hospital_hub" checked><label
+                                class="B">Hospital Hub&nbsp;<br /></label>
+                            <input type="checkbox" name="layers" id="layer3" value="vaccination_centre" checked><label
+                                class="C">Vaccination Centre&nbsp;<br /></label>
+                            <input type="checkbox" name="layers" id="layer4" value="PCN" checked><label
+                                class="D">Primary Care Network&nbsp;<br /></label>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+
+            <h2>Accumulative Vaccination Site</h2>
+
+            <div class=brstructure>
+                <div class='map-overlay-buttom' id="brname">
+                    <div id="my_dataviz"></div>
+                    <div id='vaccintext'>
+                        <h2>London</h2>
+                        <h3>Primary Care Network: 515<br />Vaccination Centre:
+                            65<br />Hospital Hub: 124<br />Pharmacy: 114<br />Total: 818</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!--add source link-->
+            <p class="credit">Vaccination site data: <a
+                    href="https://www.england.nhs.uk/coronavirus/publication/vaccination-sites/">NHS</a>.
+                London borough data: <a href="https://data.london.gov.uk/dataset/london_boroughs">GLA</a>.
+            </p>
+
+        </div>
+
+
+</body>
+
+
+<script>
+    var dataviz = document.getElementById("dataviz");
+    var my_dataviz = document.getElementById("my_dataviz");
+    var vaccintext = document.getElementById("vaccintext");
+
+    // set the dimensions and margins of the graph
+    var margin = { top: 10, right: 30, bottom: 20, left: 50 },
+        width = 150 - margin.left - margin.right,
+        height = 250 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    // Parse the Data
+    d3.csv("https://raw.githubusercontent.com/YYZ2021/group/main/london_total.csv", function (data) {
+        // List of subgroups : 4 types of vaccination site
+        var subgroups = data.columns.slice(1)
+
+        // List of groups = species here = value of the first column called group -> I show them on the X axis
+        var groups = d3.map(data, function (d) { return (d.Group) }).keys()
+
+        // Add X axis
+        var x = d3.scaleBand()
+            .domain(groups)
+            .range([0, width])
+            .padding([0.2])
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x).tickSizeOuter(0));
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain([0, 850])
+            .range([height, 0]);
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        // color palette = one color per subgroup
+        var color = d3.scaleOrdinal()
+            .domain(subgroups)
+            .range(['#ff4e50', '#66ccff', '#fc913a', '#8ec127'])
+
+        //stack the data? --> stack per subgroup
+        var stackedData = d3.stack()
+            .keys(subgroups)
+            (data)
+
+        // Show the bars
+        svg.append("g")
+            .selectAll("g")
+            // Enter in the stack data = loop key per key = group per group
+            .data(stackedData)
+            .enter().append("g")
+            .attr("fill", function (d) { return color(d.key); })
+            .selectAll("rect")
+            // enter a second time = loop subgroup per subgroup to add all rectangles
+            .data(function (d) { return d; })
+            .enter().append("rect")
+            .attr("x", function (d) { return x(d.data.Group); })
+            .attr("y", function (d) { return y(d[1]); })
+            .attr("height", function (d) { return y(d[0]) - y(d[1]); })
+            .attr("width", x.bandwidth())
+    })
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoibGluZ3J1ZmVuZyIsImEiOiJja2syZmoxaGowaXZoMzJxbzdjYm83enluIn0.ddM9J2lcLfGXLxDDIGV17A'; // Put Mapbox Public Access token
+    // Load a new map in the 'map' HTML div
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/lingrufeng/ckoe81lyq25qs19lks2cywv17', // style location
+        center: [-0.1, 51.5], // starting position [lng, lat]
+        zoom: 9.6 // starting zoom
+
+    });
+
+    map.on('load', function () {
+
+        // Add Primary Care Network layer
+        map.addLayer({
+            id: 'Primary_Care_Network',
+            type: 'circle',
+            source: {
+                type: 'vector',
+                url: 'mapbox://lingrufeng.9lr2j5yw' // Mapbox tileset Map ID
+            },
+            'source-layer': 'primary_care_network-dr3yya', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'circle-color': '#8ec127',
+                'circle-opacity': 1,
+                'circle-stroke-width': {
+                    stops: [[8, 0.1], [13, 0.2], [16, 0.5]]
+                },
+                'circle-stroke-color': '#8ec127',
+                'circle-stroke-opacity': 0.8,
+                'circle-radius': {
+                    stops: [[8, 2], [16, 10]]
+                }
+            }
+        });
+
+        // Add Pharmacy layer
+        map.addLayer({
+            id: 'Pharmacy',
+            type: 'circle',
+            source: {
+                type: 'vector',
+                url: 'mapbox://lingrufeng.8mmlsn3x' // Mapbox tileset Map ID
+            },
+            'source-layer': 'pharmacy-ax1gco', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'circle-color': '#ff4e50',
+                'circle-opacity': 1,
+                'circle-stroke-width': {
+                    stops: [[8, 0.1], [13, 0.2], [16, 0.5]]
+                },
+                'circle-stroke-color': '#ff4e50',
+                'circle-stroke-opacity': 0.8,
+                'circle-radius': {
+                    stops: [[8, 2], [16, 10]]
+                }
+
+            }
+        });
+
+        // Add Hospital Hub layer
+        map.addLayer({
+            id: 'Hospital_Hub',
+            type: 'circle',
+            source: {
+                type: 'vector',
+                url: 'mapbox://lingrufeng.2p969oji' // Mapbox tileset Map ID
+            },
+            'source-layer': 'hospital_hub-a4jfnb', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'circle-color': '#66ccff',
+                'circle-opacity': 1,
+                'circle-stroke-width': {
+                    stops: [[8, 0.1], [13, 0.2], [16, 0.5]]
+                },
+                'circle-stroke-color': '#66ccff',
+                'circle-stroke-opacity': 0.8,
+                'circle-radius': {
+                    stops: [[8, 2], [16, 10]]
+                }
+
+            }
+        });
+
+        // Add Vaccination Centre layer
+        map.addLayer({
+            id: 'Vaccination_Centre',
+            type: 'circle',
+            source: {
+                type: 'vector',
+                url: 'mapbox://lingrufeng.3p3wk0un' // Mapbox tileset Map ID
+            },
+            'source-layer': 'vaccination_centre-df2zpd', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'circle-color': '#fc913a',
+                'circle-opacity': 1,
+                'circle-stroke-width': {
+                    stops: [[8, 0.1], [13, 0.2], [16, 0.5]]
+                },
+                'circle-stroke-color': '#fc913a',
+                'circle-stroke-opacity': 0.8,
+                'circle-radius': {
+                    stops: [[8, 2], [16, 10]]
+                }
+
+            }
+        });
+
+        //Add the fill layer. It is not visible (opacity 0) and is used only as the basis of the hover selection
+        map.addLayer({
+            id: 'borough',
+            type: 'fill',
+            source: {
+                type: 'vector',
+                url: 'mapbox://lingrufeng.9j8wf2du' // Mapbox tileset Map ID
+            },
+            'source-layer': 'vaccin_london_basemap-229kka', // name of tilesets
+            /*
+            'layout': {
+                'visibility': 'visible'
+            },
+            */
+            paint: {
+                'fill-color': '#66ccff',
+                'fill-opacity': 0
+            }
+        });
+
+        // Add the line highlight layer. This layer has a filter, which initially is empty.
+        map.addLayer({
+            id: 'brhighlight',
+            type: 'line',
+            source: {
+                type: 'vector',
+                url: 'mapbox://lingrufeng.9j8wf2du' // Mapbox tileset Map ID
+            },
+            'source-layer': 'vaccin_london_basemap-229kka', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'line-color': '#adf',
+                'line-width': 4
+            },
+            filter: ['==', 'name', 'empty']
+        });
+
+        //Event listener for Pharmacy layer visibility
+        document.getElementById("layer1").addEventListener("change", function () {
+            if (this.checked) {
+                map.setLayoutProperty('Pharmacy', 'visibility', 'visible');;
+            } else {
+                map.setLayoutProperty('Pharmacy', 'visibility', 'none');;
+            }
+        });
+
+        //Event listener for hospital hub layer visibility
+        document.getElementById("layer2").addEventListener("change", function () {
+            if (this.checked) {
+                map.setLayoutProperty('Hospital_Hub', 'visibility', 'visible');;
+            } else {
+                map.setLayoutProperty('Hospital_Hub', 'visibility', 'none');;
+            }
+        });
+
+        //Event listener for Vaccination Centre layer visibility
+        document.getElementById("layer3").addEventListener("change", function () {
+            if (this.checked) {
+                map.setLayoutProperty('Vaccination_Centre', 'visibility', 'visible');;
+            } else {
+                map.setLayoutProperty('Vaccination_Centre', 'visibility', 'none');;
+            }
+        });
+
+        //Event listener for Primary Care Network layer visibility
+        document.getElementById("layer4").addEventListener("change", function () {
+            if (this.checked) {
+                map.setLayoutProperty('Primary_Care_Network', 'visibility', 'visible');;
+            } else {
+                map.setLayoutProperty('Primary_Care_Network', 'visibility', 'none');;
+            }
+        });
+
+    });
+
+    //hover highlight function
+    map.on('mousemove', function (e) {       // This is the main event listner which is triggered when the mouse moves
+        var la = map.queryRenderedFeatures(e.point, {   // This queries whether the mouse is over an object in the borough layer
+            layers: ['borough']
+        });
+
+
+        if (la.length == 1) {   // This if statement is run when the mouse is over a borough
+            // Filter the highlight layer to show the borough outline
+            map.setFilter('brhighlight', ['==', 'name', la[0].properties.name]);
+
+            // brname2.innerHTML = "<h2>" + la[0].properties.name + "</h2>"
+            // change the vaccination site number text and chart 
+            var brname = document.getElementById("brname");
+            brname.innerHTML = "<div id='vaccintext'><h2 id=\"aaa\">" + la[0].properties.name + "</h2><h3 id=\"bbb\">Primary Care Network:" + la[0].properties.primarycar + "<br />Vaccination Centre:" + la[0].properties.vaccinatio + "<br />Hospital Hub:" + la[0].properties.hospital_h + "<br />Pharmacy:" + la[0].properties.pharmacy + "<br />Total:" + la[0].properties.total + "</h3></div><div id=\"my_dataviz\"></div>";
+
+            var dic = { "Group": la[0].properties.name, "Pharmacy": la[0].properties.pharmacy, "Hospital Hub": la[0].properties.hospital_h, "Vaccination Centre": la[0].properties.vaccinatio, "Primary Care Network": la[0].properties.primarycar }
+            var data = new Array(dic)
+
+            var margin = { top: 10, right: 30, bottom: 20, left: 50 },
+                width = 150 - margin.left - margin.right,
+                height = 250 - margin.top - margin.bottom;
+
+            // clear data in old svg
+            d3.select("#my_dataviz")
+                .selectAll("*")
+                .remove();
+
+            // append the svg object to the body of the page
+            var svg = d3.select("#my_dataviz")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+            // List of subgroups : 4 types of vaccination site
+            var subgroups = new Array("Pharmacy", "Hospital Hub", "Vaccination Centre", "Primary Care Network")
+
+            // List of groups = species here = value of the first column called group -> I show them on the X axis
+            var groups = new Array(la[0].properties.name)
+
+            // Add X axis
+            var x = d3.scaleBand()
+                .domain(groups)
+                .range([0, width])
+                .padding([0.2])
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x).tickSizeOuter(0));
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([0, 100])
+                .range([height, 0]);
+            svg.append("g")
+                .call(d3.axisLeft(y));
+
+            // color palette = one color per subgroup
+            var color = d3.scaleOrdinal()
+                .domain(subgroups)
+                .range(['#ff4e50', '#66ccff', '#fc913a', '#8ec127'])
+
+            //stack the data? --> stack per subgroup
+            var stackedData = d3.stack()
+                .keys(subgroups)
+                (data)
+
+            // Show the bars
+            svg.append("g")
+                .selectAll("g")
+                // Enter in the stack data = loop key per key = group per group
+                .data(stackedData)
+                .enter().append("g")
+                .attr("fill", function (d) { return color(d.key); })
+                .selectAll("rect")
+                // enter a second time = loop subgroup per subgroup to add all rectangles
+                .data(function (d) { return d; })
+                .enter().append("rect")
+                .attr("x", function (d) { return x(d.data.Group); })
+                .attr("y", function (d) { return y(d[1]); })
+                .attr("height", function (d) { return y(d[0]) - y(d[1]); })
+                .attr("width", x.bandwidth())
+            // else remain London text and chart
+        } else {
+            map.setFilter('brhighlight', ['==', 'name', 'null']);
+            var brname = document.getElementById("brname");
+            brname.innerHTML = ""
+            brname.appendChild(my_dataviz);
+            brname.appendChild(vaccintext);
+        }
+
+    });
+
+
+
+</script>
+
+</html>

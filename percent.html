@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>London Vaccination Rate</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="./d3v6.js"></script>
+    <script src="js/ion.rangeSlider.js"></script>
+    <link rel="stylesheet" href="css/normalize.min.css" />
+    <link rel="stylesheet" href="css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" id="styleSrc" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        #map {
+            /* position: absolute; */
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100vh;
+        }
+
+
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 30%;
+            top: 10px;
+            left: 0;
+            padding: 10px;
+        }
+
+        .map-overlay h2 {
+            line-height: 50px;
+            display: block;
+            margin: 10 0 10 0;
+            padding: 10 0 10 0;
+            ;
+        }
+
+        .map-overlay .map-overlay-inner {
+            background-color: lightgrey;
+            opacity: 1;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .map-overlay table {
+            border: none;
+            width: 100%;
+        }
+
+        .map-overlay h2 {
+            line-height: 50px;
+            display: block;
+            margin: 0 0 0 0px;
+        }
+
+        #d3data {
+            width: 120%;
+            height: 50px
+        }
+
+        #bar {
+            width: 100%;
+            height: 230px;
+        }
+
+        h2#laname {
+            font: 16px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            vertical-align: bottom;
+            color: #333;
+            font-weight: bold;
+        }
+
+
+        .map-text-right {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 300px;
+            min-width: 380px;
+            top: 0px;
+            right: 0;
+            padding: 0px;
+            float: right;
+        }
+
+
+
+        .map-text-right .map-text-right-inner {
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.9);
+
+        }
+
+        .map-discription {
+            float: right;
+            color: #333;
+        }
+
+        h2#nnn {
+            margin: 20px 30px 12px 30px;
+            padding: 0;
+            font: 20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: 	#3b5998;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        h3#mmm {
+            margin: 0px 30px 0px 30px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: justify;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div id='map'></div>
+    <div class='map-text-right'>
+        <div class='map-text-right-inner'>
+            <div class='map-discription' id='righttext'>
+                <br><br><br><br>
+                <h2 id='nnn'>Vaccination Process</h2>
+                
+                <h3 id='mmm'>According to <a
+                        href="https://news.sky.com/story/more-than-six-million-britons-fully-vaccinated-against-coronavirus-12269454">Sky
+                        news</a>, London boroughs are estimated to have the lowest COVID vaccination
+                    rates for over- 50s populations, where Stratford-on-Avon is believed to have all over 50s population
+                    vaccine. </h3>
+
+                    <br>
+                <h3 id='mmm'>As financial times states, Vaccination rates in London’s ethnically diverse boroughs are
+                    much lower than in the rest of the country. Also, the population in ethnic groups includes Black
+                    African, Black Caribbean, Bangladeshi, Pakistani and Chinese are much more likely to have not been
+                    vaccinated. These ethnical-diverse areas were hit hardest by the pandemic and also least likely to
+                    take the vaccine. Campaigner Patrick Vernon states that “social inequality and structural racism”
+                    with health inequalities faced by non-white residences exist during the pandemic, which he argues is
+                    the reason why these boroughs have such a low vaccination rate. </h3>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class='map-overlay'>
+        <div class='map-overlay-inner'>
+            <h2>Vaccination Rate</h2>
+            <select id="select_id">
+                <option value="1st dose">1st dose</option>
+                <option value="2nd dose">2nd dose</option>
+            </select>
+            <br>
+            <h2 id="laname">Hover over a borough</h2>
+            <div id="d3data"></div>
+            <div class="len">
+                <input type="text" id="range_2" />
+
+            </div>
+            <div id="bar"></div>
+            <p class="credit">Vaccination data: <a
+                    href="https://data.london.gov.uk/dataset/coronavirus--covid-19--cases">GLA</a>.
+                London borough data: <a href="https://data.london.gov.uk/dataset/london_boroughs">GLA</a>.
+            </p>
+        </div>
+
+        <script src="index.js" type="module">
+
+        </script>
+
+    </div>
+
+
+</body>
+
+</html>
