@@ -244,10 +244,13 @@
 
     <div id="legendtext" class="legend">
         <h3 id="ccc">Scale</h3>
-        <div><span style="background-color: rgba(255,152,90, 0.85)"></span>40</div>
-        <div><span style="background-color: rgba(255,179,71, 0.85)"></span>10</div>
-        <div><span style="background-color: rgba(242,200,148, 0.85)"></span>-20</div>
-        <div><span style="background-color: rgba(159,192,222, 0.85)"></span>-50</div>
+        <div><span style="background-color: rgba(56, 0, 11, 0.85)"></span>40</div>
+        <div><span style="background-color: rgba(113, 0, 22, 0.85)"></span>25</div>
+        <div><span style="background-color: rgba(189, 0, 38, 0.85)"></span>5</div>
+        <div><span style="background-color: rgba(252, 78, 42, 0.85)"></span>-10</div>
+        <div><span style="background-color: rgba(254, 178, 76, 0.85)"></span>-25</div>
+        <div><span style="background-color: rgba(255, 237, 160, 0.85)"></span>-40</div>
+        <div><span style="background-color: rgba(159,192,222, 0.85)"></span>-55</div>
         <div><span style="background-color: rgba(119,158,204, 0.85)"></span>-80</div>
     </div>
 
@@ -263,17 +266,18 @@
                         <div id='monthprint'>
                             <label id='month'>Mar</label>
                         </div>
-                        <input id='slider' type='range' min='0' max='8' step='1' value='0' list='tickmarks' />
+                        <input id='slider' type='range' min='0' max='9' step='1' value='0' list='tickmarks' />
                         <datalist id="tickmarks">
                             <option value="0" label="Mar">
                             <option value="1">
                             <option value="2">
                             <option value="3">
-                            <option value="4" label="Aug">
+                            <option value="4" label="Jul">
                             <option value="5">
                             <option value="6">
                             <option value="7">
-                            <option value="8" label="Dec">
+                            <option value="8">
+                            <option value="9" label="Dec">
                         </datalist>
                     </td>
                 </tr>
@@ -419,13 +423,14 @@
                 'visibility': 'visible'
             },
             paint: {
-                'fill-opacity': 0.85,
+                'fill-opacity': 0.5,
                 'fill-color': {
                     property: 'Mar',
-                    stops: [[-80, '#779ecc'], [-50, '#9fc0de'], [-20, '#f2c894'], [10, '#ffb347'], [40, '#ff985a']]
+                    stops: [[-80, '#779ecc'], [-55, '#9fc0de'],[-40, '#ffeda0'], [-25, '#feb24c'],[-10, '#fc4e2a'], [5, '#bd0026'],[25, '#710016'], [40, '#38000b']]
+                    //stops: [[-80, '#779ecc'], [-50, '#9fc0de'], [-20, '#f2c894'], [10, '#ffb347'], [40, '#ff985a']]    
                 }
 
-
+                
             }
 
 
