@@ -180,11 +180,6 @@
             padding: 0;
         }
 
-        .map-overlay .map-overlay-buttom {
-            display: flex;
-            flex-direction: row;
-        }
-
         .map-text-right {
             font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
             position: relative;
