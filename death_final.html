@@ -1,235 +1,27 @@
-<!-- The interactive mapping website is based on 'Mapbox_example9', one of the practical 2 exercises.-->
-
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
+    
     <!-- title of the webpage -->
-    <title>London Cases and Deaths</title>
+    <title>Deaths in London</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+    
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v4.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet" />
+    <link href="./css/index_death.css" rel="stylesheet" />
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* position and size of map container */
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-        }
-
-        /* style of the popup */
-        .mapboxgl-popup {
-            max-width: 10px;
-            font: 10px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-        }
-
-        h1 {
-            position: absolute;
-            top: 0px;
-            left: 10px;
-            color: whitesmoke;
-            font-weight: bolder;
-            font-size: 2em;
-        }
-
-        .map-overlay h2 {
-            line-height: 50px;
-            display: block;
-            margin: 0 0 0 0px;
-        }
-
-        h3 {
-            margin: 0px 0px 6px 0px;
-            padding: 0;
-            font: 12px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #333;
-            font-weight: bold;
-        }
-
-        h4 {
-            margin: 0;
-            color: #333;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        h5 {
-            margin: 0;
-            color: #333;
-            font-weight: normal;
-            font-size: 0.85em;
-        }
-
-        .map-overlay {
-            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            position: absolute;
-            width: 400px;
-            min-width: 410px;
-            top: 0;
-            left: 0;
-            padding: 10px;
-        }
-
-
-        .map-overlay .map-overlay-inner {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
-            border-radius: 3px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .map-overlay input {
-            background-color: transparent;
-            display: inline-block;
-            width: 100%;
-            position: relative;
-            margin: 0;
-            cursor: ew-resize;
-        }
-
-        .map-overlay label {
-            font: 13px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            vertical-align: bottom;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-
-        .map-overlay .map-overlay-buttom {
-            display: flex;
-            flex-direction: row;
-        }
-
-        h2#aaa {
-            margin: 0px 0px 6px 0px;
-            padding: 0;
-            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #333;
-            font-weight: bold;
-        }
-
-        h3#bbb {
-            margin: 0px 0px 6px 0px;
-            padding: 0;
-            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #333;
-        }
-
-        .map-text-right {
-            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            position: relative;
-            width: 300px;
-            min-width: 380px;
-            top: 0;
-            left: 0px;
-            padding: 0px;
-            float: right;
-        }
-
-        .map-text-right .map-text-right-inner {
-            height: 100vh;
-            background-color: rgba(255, 255, 255, 0.9);
-
-        }
-
-        svg {
-            position: relative;
-            top: 10px;
-        }
-
-        .map-discription {
-            float: right;
-            color: rgba(0, 0, 0, 0.8);
-        }
-
-        h2#nnn {
-            margin: 20px 30px 12px 30px;
-            padding: 0;
-            font: 20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #333;
-            font-weight: bold;
-            text-align: right;
-        }
-
-        h3#mmm {
-            margin: 0px 30px 0px 30px;
-            padding: 0;
-            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #333;
-            text-align: justify;
-        }
-
-        h3#ooo {
-            margin: 12px 30px 10px 30px;
-            padding: 0;
-            font: 18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #C0392B;
-            text-align: right;
-            font-weight: bold;
-        }
-
-        h3#oooo {
-            margin: 12px 30px 10px 30px;
-            padding: 0;
-            font: 18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #00aedb;
-            text-align: left;
-            font-weight: bold;
-        }
-
-        h3#ppp {
-            margin: 0px 30px 15px 0px;
-            padding: 0;
-            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #333;
-            text-align: right;
-            font-weight: bold;
-        }
-
-        h3#rrr {
-            margin: 0px 30px 15px 30px;
-            padding: 0;
-            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #333;
-            text-align: justify;
-            font-weight: bold;
-        }
-
-        h3#qqq {
-            margin: 0px 0px 0px 30px;
-            padding: 0;
-            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #333;
-            text-align: left;
-        }
-
-        h3#ttt {
-            margin: 0px 30px 0px 0px;
-            padding: 0;
-            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            color: #333;
-            text-align: right;
-        }
-    </style>
 
 </head>
 
 <body>
+    
 
     <div id="map"></div>
-
+    <!-- Information in the right information box -->
     <div class='map-text-right'>
         <div class='map-text-right-inner'>
             <div class='map-discription'>
@@ -263,7 +55,8 @@
             </div>
         </div>
     </div>
-
+    
+    <!-- Information on the left hover -->
     <div class="map-overlay top">
         <div class="map-overlay-inner">
             <h2>Monthly New COVID-19 Deaths in London</h2>
@@ -336,7 +129,7 @@
                         <tbody>
                             <tr>
                                 <td align="center">
-                                    <!-- <h4>Corresponding Values of COVID Cases <br /> to the boundaries of outer to inner circles:</h4> -->
+                       <!-- <h4>Corresponding Values of new COVID deaths <br /> to the boundaries of outer to inner circles:</h4> -->
                                     <h5><br />
                                         <br />
                                         Values
@@ -357,30 +150,17 @@
 
 
             <h2>Accumulative Death Cases</h2>
-
             <div class=brstructure>
                 <div class='map-overlay-buttom' id="brname">
-                    <div id="my_dataviz"></div>
-                    <div id='deathtext'>
-                        <h2 id='aaa'>London</h2>
-                        <h3 id="bbb">01/04/2020: 709<br />01/05/2020: 995<br />01/06/2020: 1328<br />01/07/2020:
-                            1342<br />01/08/2020: 1348<br />01/09/2020: 1356<br />01/10/2020: 1360<br />01/11/2020:
-                            1390<br />01/12/2020: 1469<br />01/01/2021: 1750<br />01/02/2021: 1893<br />01/03/2021:
-                            1937<br />01/04/2021: 1943</h3>
-                    </div>
+                <div id="my_dataviz"><h2 id='aaa'>London</h2></div>
                 </div>
             </div>
-
-
             <p class="credit">Coronavirus death data: <a
                     href="https://data.london.gov.uk/dataset/coronavirus--covid-19--deaths/">NHS</a>.
                 London borough data: <a href="https://data.london.gov.uk/dataset/london_boroughs">GLA</a>.
             </p>
-        </div>
-
-    </div>
-
-
+           </div>
+           </div>
 </body>
 
 
@@ -466,7 +246,7 @@
 
                 var date = [];
                 header = Object.keys(data.features[0].properties) // return an array of columns' header name shown in the geojson file.
-                date = header.slice(2, header.length) // select from the third attribute in the array so that we can get the attributes for dates ranging from '22/01/2020' to '28/02/2021'.
+                date = header.slice(2, header.length) // select from the third attribute in the array so that we can get the attributes for months ranging from April 2020 to April 2021.
 
                 var Initialdate = 'April 2020';
 
@@ -476,7 +256,7 @@
                 });
 
 
-                // This is the function for drawing the proportional symbols/circles for absolute confirmed cases for boroughs by day_i
+                // This is the function for drawing the proportional symbols/circles for new deaths for boroughs by month_i
                 function addnewLayer(day_i) {
                     map.addLayer({
                         'id': 'circles',
@@ -503,7 +283,7 @@
                     })
                 };
 
-                addnewLayer(Initialdate) // Let the layer of proportional symbols run from '11/02/2020'
+                addnewLayer(Initialdate) // Let the layer of proportional symbols run from the initial month
 
 
                 function filterBy(i) {
@@ -512,7 +292,7 @@
                     document.getElementById('timestamps').textContent = date[i];
                 }
 
-                filterBy(0) // When opening the webpage, the time slider can be stopped in the first day for the dataset: 22/01/2020
+                filterBy(0) // When opening the webpage, the time slider can be stopped in the first month for the dataset
 
                 document
                     .getElementById('slider')
@@ -523,8 +303,6 @@
                     });
 
             });
-
-
 
 
 
@@ -581,23 +359,24 @@
             // brname2.innerHTML = "<h2>" + la[0].properties.name + "</h2>"
             // change the vaccination site number text and chart 
             var brname = document.getElementById("brname");
-            brname.innerHTML = "<div id='deathtext'><h2 id=\"aaa\">" + la[0].properties.name + "</h2><h3 id=\"bbb\">01/04/2020:" + + la[0].properties.aapr + "<br />01/05/2020:" + la[0].properties.amay + "<br />01/06/2020: " + la[0].properties.ajun + "<br />01/07/2020: " + la[0].properties.ajul + "<br />01/08/2020: " + la[0].properties.aaug + "<br />01/09/2020: " + la[0].properties.asep + "<br />01/10/2020: " + la[0].properties.aoct + "<br />01/11/2020: " + la[0].properties.anov + "<br />01/12/2020: " + la[0].properties.adec + "<br />01/01/2021: " + la[0].properties.bjan + "<br />01/02/2021: " + la[0].properties.bfeb + "<br />01/03/2021: " + la[0].properties.bmar + "<br />01/04/2021: " + la[0].properties.bapr + "</h3></div><div id=\"my_dataviz\"></div>";
+                brname.innerHTML = "<h2 id=\"aaa\">" + la[0].properties.name + "</h2><div id=\"my_dataviz\"><h3 id=\"bbb\">Apr/2020:" + + la[0].properties.aapr + "<br />May/2020:" + la[0].properties.amay + "<br />Jun/2020: " + la[0].properties.ajun + "<br />Jul/2020: " + la[0].properties.ajul + "<br />Aug/2020: " + la[0].properties.aaug + "<br />Sep/2020: " + la[0].properties.asep + "<br />Oct/2020: " + la[0].properties.aoct + "<br />Nov/2020: " + la[0].properties.anov + "<br />Dec/2020: " + la[0].properties.adec + "<br />Jan/2021: " + la[0].properties.bjan + "<br />Feb/2021: " + la[0].properties.bfeb + "<br />Mar/2021: " + la[0].properties.bmar + "<br />Apr/2021: " + la[0].properties.bapr + "</h3></div>";
+                
+                
+                var aapr = { date: "Apr/2020", value: la[0].properties.aapr };
+                var amay = { date: "May/2020", value: la[0].properties.amay };
+                var ajun = { date: "Jun/2020", value: la[0].properties.ajun };
+                var ajul = { date: "Jul/2020", value: la[0].properties.ajul };
+                var aaug = { date: "Aug/2020", value: la[0].properties.aaug };
+                var asep = { date: "Sep/2020", value: la[0].properties.asep };
+                var aoct = { date: "Oct/2020", value: la[0].properties.aoct };
+                var anov = { date: "Nov/2020", value: la[0].properties.anov };
+                var adec = { date: "Dec/2020", value: la[0].properties.adec };
+                var bjan = { date: "Jan/2021", value: la[0].properties.bjan };
+                var bfeb = { date: "Feb/2021", value: la[0].properties.bfeb };
+                var bmar = { date: "Mar/2021", value: la[0].properties.bmar };
+                var bapr = { date: "Apr/2021", value: la[0].properties.bapr };
+                var data = [aapr, amay, ajun, ajul, aaug, asep, aoct, anov, adec, bjan, bfeb, bmar, bapr]
 
-            var dic = { "Group": la[0].properties.name, "01/03/2020": la[0].properties.amar, "01/04/2020": la[0].properties.aapr, "01/05/2020": la[0].properties.amay, "01/06/2020": la[0].properties.ajun, "01/07/2020": la[0].properties.ajul, "01/08/2020": la[0].properties.aaug, "01/09/2020": la[0].properties.asep, "01/10/2020": la[0].properties.aoct, "01/11/2020": la[0].properties.anov, "01/12/2020": la[0].properties.adec, "01/01/2021": la[0].properties.bjan, "01/02/2021": la[0].properties.bfeb, "01/03/2021": la[0].properties.bmar, "01/04/2021": la[0].properties.bapr, "01/05/2021": la[0].properties.bmay }
-            var aapr = { date: "01/04/2020", value: la[0].properties.aapr };
-            var amay = { date: "01/05/2020", value: la[0].properties.amay };
-            var ajun = { date: "01/06/2020", value: la[0].properties.ajun };
-            var ajul = { date: "01/07/2020", value: la[0].properties.ajul };
-            var aaug = { date: "01/08/2020", value: la[0].properties.aaug };
-            var asep = { date: "01/09/2020", value: la[0].properties.asep };
-            var aoct = { date: "01/10/2020", value: la[0].properties.aoct };
-            var anov = { date: "01/11/2020", value: la[0].properties.anov };
-            var adec = { date: "01/12/2020", value: la[0].properties.adec };
-            var bjan = { date: "01/01/2021", value: la[0].properties.bjan };
-            var bfeb = { date: "01/02/2021", value: la[0].properties.bfeb };
-            var bmar = { date: "01/03/2021", value: la[0].properties.bmar };
-            var bapr = { date: "01/04/2021", value: la[0].properties.bapr };
-            var data = [aapr, amay, ajun, ajul, aaug, asep, aoct, anov, adec, bjan, bfeb, bmar, bapr]
 
 
             // set the dimensions and margins of the graph

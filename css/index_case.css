@@ -1,0 +1,213 @@
+   body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* position and size of map container */
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        /* style of the popup */
+        .mapboxgl-popup {
+            max-width: 10px;
+            font: 10px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+        
+        /* style of h1 font */ 
+        h1 {
+            position: absolute;
+            top: 0px;
+            left: 10px;
+            color: whitesmoke;
+            font-weight: bolder;
+            font-size: 2em;
+        }
+        
+        /* style of h2 font */ 
+        .map-overlay h2 {
+            line-height: 50px;
+            display: block;
+            margin: 0 0 0 0px;
+        }
+        
+        h2#aaa {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        h2#nnn {
+            margin: 20px 30px 12px 30px;
+            padding: 0;
+            font: 20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        /* style of h3 font */ 
+        h3 {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 12px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        h3#bbb {
+            margin: 0px 0px 6px 0px;
+            padding: 0;
+            font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+        
+        h3#mmm {
+            margin: 0px 30px 0px 30px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: justify;
+        }
+
+        h3#ooo {
+            margin: 12px 30px 10px 30px;
+            padding: 0;
+            font: 18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #C0392B;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        h3#oooo {
+            margin: 12px 30px 10px 30px;
+            padding: 0;
+            font: 18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #00aedb;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        h3#ppp {
+            margin: 0px 30px 15px 0px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        h3#rrr {
+            margin: 0px 30px 15px 30px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: justify;
+            font-weight: bold;
+        }
+
+        h3#qqq {
+            margin: 0px 0px 0px 30px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: left;
+        }
+
+        h3#ttt {
+            margin: 0px 30px 0px 0px;
+            padding: 0;
+            font: 16px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            color: #333;
+            text-align: right;
+        }
+        
+        /* style of h4 font */ 
+        h4 {
+            margin: 0;
+            color: #333;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        /* style of h5 font */ 
+        h5 {
+            margin: 0;
+            color: #333;
+            font-weight: normal;
+            font-size: 0.85em;
+        }
+        
+        /* map overlay */ 
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 350px;
+            min-width: 350px;
+            top: 0;
+            left: 0;
+            padding: 10px;
+        }
+        
+        .map-overlay .map-overlay-inner {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .map-overlay input {
+            background-color: transparent;
+            display: inline-block;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            cursor: ew-resize;
+        }
+
+        .map-overlay label {
+            font: 13px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            vertical-align: bottom;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .map-overlay .map-overlay-buttom {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .map-text-right {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: relative;
+            width: 300px;
+            min-width: 380px;
+            top: 0;
+            left: 0px;
+            padding: 0px;
+            float: right;
+        }
+
+        .map-text-right .map-text-right-inner {
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.9);
+
+        }
+
+        svg {
+            position: relative;
+            top: 10px;
+        }
+
+        .map-discription {
+            float: right;
+            color: rgba(0, 0, 0, 0.8);
+        }

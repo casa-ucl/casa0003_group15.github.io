@@ -183,7 +183,7 @@ map.on("load", function () {
         "line-width": 2,
       },
     });
-    initLegend()
+    initLegend();
     function initLegend() {
       let div = d3.select("#d3data");
       div.selectAll("*").remove();
@@ -272,12 +272,11 @@ map.on("load", function () {
         )(totalNum)}  `;
 
         let bardata = d3.rollups(
-          data4,
+          data.get(sel),
           (d) =>
             d3.sum(d, (v) => +v.vaccines) / +d3.sum(d, (v) => +v.population),
           (d) => d.end_date
         );
-
         new Bar(bardata, "bar", "Total");
         // d3.select("#bar").selectAll("*").remove();
       }
@@ -370,10 +369,7 @@ class Bar {
       .range([0, this.innerW])
       .domain(this.data.map((d) => d[0]))
       .padding(0.3);
-    this.y = d3
-      .scaleLinear()
-      .range([this.innerH, 0])
-      .domain([0, d3.max(this.data, (d) => d[1])]);
+    this.y = d3.scaleLinear().range([this.innerH, 0]).domain([0, 0.6]);
 
     this.AxisY = this.ChartArea.append("g");
     this.AxisX = this.ChartArea.append("g").attr(
@@ -392,7 +388,7 @@ class Bar {
     this.height = node.node().getBoundingClientRect().height;
   }
   drawBar() {
-    this.AxisY.call(d3.axisLeft(this.y).tickFormat(d3.format(".1%")));
+    this.AxisY.call(d3.axisLeft(this.y).tickFormat(d3.format(".1%")).ticks(6));
 
     this.DrawArea.selectAll("rect")
       .data(this.data)
